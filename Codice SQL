@@ -1,0 +1,149 @@
+CREATE TABLE cliente
+(
+	CF smallint,
+	Nome VARCHAR(20) NOT NULL,
+	Cognome VARCHAR(20) NOT NULL,
+	Datadinascita VARCHAR(20) NOT NULL,
+	PRIMARY KEY(CF)
+);
+
+CREATE TABLE dipendente
+(
+	CF smallint,
+	Nome VARCHAR(20) NOT NULL,
+	Cognome VARCHAR(20) NOT NULL,
+	Stipendio small int NOT NULL,
+	PRIMARY KEY(CF)
+);
+
+CREATE TABLE acquisto
+(
+	Numero smallint,
+	Data CHAR(8) NOT NULL,
+	Dipendente VARCHAR(20) NOT NULL,
+	Cliente VARCHAR(20) NOT NULL,
+	FOREIGN KEY Dipendente REFERENCES dipendente(CF),
+	FOREIGN KEY Cliente REFERENCES Cliente(CF),
+	PRIMARY KEY(Numero)
+);
+
+CREATE TABLE include 
+(
+	Libro VARCHAR(20) NOT NULL,
+	Acquisto smallint,
+	Quantità smallint,
+	FOREIGN KEY Acquisto REFERNCES acquisto(Numero),
+	FOREIGN KEY Libro REFERENCES Libro(ISBN)
+);
+
+CREATE TABLE autore
+(	
+	ID smallint,
+	Nome VARCHAR(20) NOT NULL,
+	Cognome VARCHAR(20) NOT NULL,
+	Datadinascita CHAR(8) NOT NULL,
+	PRIMARY KEY(ID)
+);
+
+CREATE TABLE scrive 
+(
+	Autore VARCHAR(20) NOT NULL,
+	Libro VARCHAR(20) NOT NULL,
+	FOREIGN KEY Autore REFERNCES autore(ID),
+	FOREIGN KEY Libro REFERENCES libro(ISBN)
+);
+
+CREATE TABLE libro 
+(
+	ISBN CHAR(13) NOT NULL,
+	Titolo VARCHAR(20) NOT NULL,
+	Prezzo smallint,
+	Disponibili smallint,
+	Collana VARCHAR(20),
+	PRIMARY KEY(ISBN),
+	FOREIGN KEY Collana REFERENCES collana(Nome)
+);
+
+CREATE TABLE pubblica
+(	
+	Editore VARCHAR(20) NOT NULL,
+	Libro VARCHAR(20) NOT NULL,
+	Data CHAR(8),
+	FOREIGN KEY Editore REFERENCES editore(Nome),
+	FOREIGN KEY Libro REFERENCES libro(ISBN)
+);
+
+CREATE TABLE editore
+(
+	Nome VARCHAR(20) NOT NULL,
+	PRIMARY KEY(Nome)
+);
+
+CREATE TABLE collana
+(
+	Nome VARCHAR(20) NOT NULL,
+	Editore VARCHAR(20) NOT NULL,
+	Descrizione VARCHAR(50),
+	PRIMARY KEY(Nome),
+	FOREIGN KEY Editore REFERENCES editore(Nome)
+);
+
+CREATE TABLE appartiene 
+(	
+	Genere VARCHAR(20) NOT NULL,
+	Libro VARCHAR(20) NOT NULL,
+	FOREIGN KEY Libro REFERENCES libro(ISBN),
+	FOREIGN KEY Genere REFERENCES genere(Nome)
+);
+
+CREATE TABLE genere
+(
+	Nome VARCHAR(20) NOT NULL,
+	Descrizione VARCHAR(50),
+	PRIMARY KEY(Nome)
+);
+
+CREATE TABLE fornitore
+(	P.IVA VARCHAR(20) NOT NULL,
+	Nome VARCHAR(20) NOT NULL,
+	Indirizzo VARCHAR(20) NOT NULL,
+	PRIMARY KEY(P.IVA)
+);
+
+CREATE TABLE catalogo
+(
+	Fornitore VARCHAR(20) NOT NULL,
+	Libro VARCHAR(20) NOT NULL,
+	FOREIGN KEY Fornitore REFERENCES fornitore(P.IVA),
+	FOREIGN KEY Libro REFERENCES libro(ISBN)
+);
+
+CREATE TABLE richiesta
+(
+	Fornitore VARCHAR(20) NOT NULL,
+	Libro VARCHAR(20) NOT NULL,
+	Prenotazione smallint,
+	Quantità smallint,
+	FOREIGN KEY Fornitore REFERENCES fornitore(P.IVA),
+	FOREIGN KEY Libro REFERENCES libro(ISBN),
+	FOREIGN KEY Prenotazione REFERENCES prenotazione(Numero)
+);
+
+CREATE TABLE prenotazione
+(
+	Numero smallint,
+	Data CHAR(8) NOT NULL,
+	Prezzo smallint,
+	Stato VARCHAR(20),
+	Cliente VARCHAR(20) NOT NULL,
+	Dipendente VARCHAR(20) NOT NULL,
+	PRIMARY KEY(Numero),
+	FOREIGN KEY Cliente REFERENCES cliente(CF),
+	FOREIGN KEY Dipendente REFERENCES cliente(CF)
+);
+	
+	
+	
+	
+	
+	
