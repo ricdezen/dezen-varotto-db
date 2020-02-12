@@ -1,4 +1,3 @@
-# De Zen & Varotto's Database course project
 CREATE TABLE cliente
 (
 	CF VARCHAR(20),
