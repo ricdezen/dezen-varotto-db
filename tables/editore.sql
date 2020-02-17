@@ -1,0 +1,4 @@
+CREATE TABLE editore (
+	Nome VARCHAR(20) NOT NULL,
+	PRIMARY KEY(Nome)
+);

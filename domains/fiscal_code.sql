@@ -1,0 +1,2 @@
+CREATE DOMAIN fiscal_code AS CHAR(16)
+CHECK (VALUE LIKE '[A-z|0-9]{15}');

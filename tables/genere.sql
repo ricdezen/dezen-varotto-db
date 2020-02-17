@@ -1,0 +1,5 @@
+CREATE TABLE genere (
+	Nome VARCHAR(20) NOT NULL,
+	Descrizione VARCHAR(500),
+	PRIMARY KEY(Nome)
+);
