@@ -1,7 +1,7 @@
 CREATE TABLE richiesta (
-	Fornitore VARCHAR(20) NOT NULL,
-	Libro VARCHAR(20) NOT NULL,
-	Prenotazione VARCHAR(20),
+	Fornitore partita_iva NOT NULL,
+	Libro isbn_code NOT NULL,
+	Prenotazione INTEGER,
 	Quantità smallint,
 	PRIMARY KEY(Prenotazione,Libro,Fornitore),
 	FOREIGN KEY Fornitore REFERENCES fornitore(PIVA),

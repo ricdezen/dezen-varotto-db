@@ -1,5 +1,5 @@
 CREATE TABLE libro (
-	ISBN CHAR(13) NOT NULL,
+	ISBN isbn_code NOT NULL,
 	Titolo VARCHAR(50) NOT NULL,
 	Prezzo smallint,
 	Disponibili smallint,

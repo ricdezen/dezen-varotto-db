@@ -1,8 +1,8 @@
 CREATE TABLE prenotazione (
-	Numero VARCHAR(20),
+	Numero INTEGER,
 	Dataprenotazione DATE NOT NULL,
-	Prezzo smallint,
-	Stato VARCHAR(20),
+	Prezzo smallint NOT NULL,
+	Stato stato_prenotazione NOT NULL,
 	Cliente fiscal_code NOT NULL,
 	Dipendente fiscal_code NOT NULL,
 	PRIMARY KEY(Numero),

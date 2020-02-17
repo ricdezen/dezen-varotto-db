@@ -1,5 +1,5 @@
 CREATE TABLE autore (
-	ID VARCHAR(20),
+	ID INTEGER,
 	Nome VARCHAR(20) NOT NULL,
 	Cognome VARCHAR(20) NOT NULL,
 	Datadinascita DATE NOT NULL,

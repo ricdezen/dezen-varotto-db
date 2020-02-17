@@ -1,5 +1,5 @@
 CREATE TABLE catalogo (
-	Fornitore VARCHAR(20) NOT NULL,
+	Fornitore partita_iva NOT NULL,
 	Libro VARCHAR(20) NOT NULL,
 	PRIMARY KEY(Fornitore,Catalogo),
 	FOREIGN KEY Fornitore REFERENCES fornitore(PIVA),
