@@ -1,7 +1,11 @@
-CREATE TABLE collana (
-	Nome VARCHAR(20) NOT NULL,
-	Editore VARCHAR(20) NOT NULL,
-	Descrizione VARCHAR(500),
-	PRIMARY KEY(Nome),
-	FOREIGN KEY Editore REFERENCES editore(Nome)
-);
+CREATE TABLE collana
+(
+    nome character varying(50) NOT NULL,
+    nome_editore character varying(50) NOT NULL,
+    descrizione text,
+    CONSTRAINT collana_pkey PRIMARY KEY (nome),
+    CONSTRAINT collana_nome_editore_fkey FOREIGN KEY (nome_editore)
+        REFERENCES editore (nome) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)

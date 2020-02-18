@@ -1,7 +1,14 @@
-CREATE TABLE catalogo (
-	Fornitore partita_iva NOT NULL,
-	Libro VARCHAR(20) NOT NULL,
-	PRIMARY KEY(Fornitore,Catalogo),
-	FOREIGN KEY Fornitore REFERENCES fornitore(PIVA),
-	FOREIGN KEY Libro REFERENCES libro(ISBN)
-);
+CREATE TABLE catalogo
+(
+    fornitore partita_iva NOT NULL,
+    libro isbn_code NOT NULL,
+    CONSTRAINT catalogo_pkey PRIMARY KEY (fornitore, libro),
+    CONSTRAINT catalogo_fornitore_fkey FOREIGN KEY (fornitore)
+        REFERENCES fornitore (piva) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT catalogo_libro_fkey FOREIGN KEY (libro)
+        REFERENCES libro (isbn) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)

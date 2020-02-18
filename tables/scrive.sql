@@ -1,6 +1,13 @@
-CREATE TABLE scrive (
-	Autore VARCHAR(20) NOT NULL,
-	Libro isbn_code NOT NULL,
-	FOREIGN KEY Autore REFERNCES autore(ID),
-	FOREIGN KEY Libro REFERENCES libro(ISBN)
-);
+CREATE TABLE scrive
+(
+    autore integer NOT NULL,
+    libro isbn_code NOT NULL,
+    CONSTRAINT scrive_autore_fkey FOREIGN KEY (autore)
+        REFERENCES autore (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT scrive_libro_fkey FOREIGN KEY (libro)
+        REFERENCES libro (isbn) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)

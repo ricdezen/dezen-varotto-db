@@ -1,7 +1,8 @@
-CREATE TABLE cliente(
-	CF fiscal_code,
-	Nome VARCHAR(20) NOT NULL,
-	Cognome VARCHAR(20) NOT NULL,
-	Datadinascita DATE NOT NULL,
-	PRIMARY KEY(CF)
-);
+CREATE TABLE cliente
+(
+    cf fiscal_code NOT NULL,
+    nome character varying(20) NOT NULL,
+    cognome character varying(20) NOT NULL,
+    datadinascita date NOT NULL,
+    CONSTRAINT cliente_pkey PRIMARY KEY (cf)
+)

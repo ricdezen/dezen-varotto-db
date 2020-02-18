@@ -1,5 +1,6 @@
-CREATE TABLE genere (
-	Nome VARCHAR(20) NOT NULL,
-	Descrizione VARCHAR(500),
-	PRIMARY KEY(Nome)
-);
+CREATE TABLE genere
+(
+    nome character varying(20) NOT NULL,
+    descrizione text,
+    CONSTRAINT genere_pkey PRIMARY KEY (nome)
+)

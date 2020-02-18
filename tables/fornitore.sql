@@ -1,6 +1,7 @@
-CREATE TABLE fornitore (
-	PIVA partita_iva NOT NULL,
-	Nome VARCHAR(20) NOT NULL,
-	Indirizzo VARCHAR(50) NOT NULL,
-	PRIMARY KEY(PIVA)
-);
+CREATE TABLE fornitore
+(
+    piva partita_iva NOT NULL,
+    nome character varying(50) NOT NULL,
+    indirizzo character varying(50) NOT NULL,
+    CONSTRAINT fornitore_pkey PRIMARY KEY (piva)
+)

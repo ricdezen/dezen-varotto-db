@@ -1,10 +1,21 @@
-CREATE TABLE richiesta (
-	Fornitore partita_iva NOT NULL,
-	Libro isbn_code NOT NULL,
-	Prenotazione INTEGER,
-	Quantità smallint,
-	PRIMARY KEY(Prenotazione,Libro,Fornitore),
-	FOREIGN KEY Fornitore REFERENCES fornitore(PIVA),
-	FOREIGN KEY Libro REFERENCES libro(ISBN),
-	FOREIGN KEY Prenotazione REFERENCES prenotazione(Numero)
-);
+CREATE TABLE richiesta
+(
+    fornitore partita_iva NOT NULL,
+    libro isbn_code NOT NULL,
+    prenotazione integer NOT NULL,
+    quantita smallint NOT NULL,
+    CONSTRAINT richiesta_pkey PRIMARY KEY (prenotazione, libro, fornitore),
+    CONSTRAINT richiesta_fornitore_fkey FOREIGN KEY (fornitore)
+        REFERENCES fornitore (piva) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT richiesta_libro_fkey FOREIGN KEY (libro)
+        REFERENCES libro (isbn) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT richiesta_prenotazione_fkey FOREIGN KEY (prenotazione)
+        REFERENCES prenotazione (numero) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT richiesta_quantita_check CHECK (quantita > 0)
+)

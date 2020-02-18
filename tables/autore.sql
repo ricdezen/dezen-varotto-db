@@ -1,7 +1,8 @@
-CREATE TABLE autore (
-	ID INTEGER,
-	Nome VARCHAR(20) NOT NULL,
-	Cognome VARCHAR(20) NOT NULL,
-	Datadinascita DATE NOT NULL,
-	PRIMARY KEY(ID)
-);
+CREATE TABLE autore
+(
+    id SERIAL,
+    nome character varying(20) NOT NULL,
+    cognome character varying(20) NOT NULL,
+    datadinascita date NOT NULL,
+    CONSTRAINT autore_pkey PRIMARY KEY (id)
+)
