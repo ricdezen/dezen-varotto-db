@@ -7,15 +7,15 @@ CREATE TABLE richiesta
     CONSTRAINT richiesta_pkey PRIMARY KEY (prenotazione, libro, fornitore),
     CONSTRAINT richiesta_fornitore_fkey FOREIGN KEY (fornitore)
         REFERENCES fornitore (piva) MATCH SIMPLE
-        ON UPDATE NO ACTION
+        ON UPDATE CASCADE
         ON DELETE NO ACTION,
     CONSTRAINT richiesta_libro_fkey FOREIGN KEY (libro)
         REFERENCES libro (isbn) MATCH SIMPLE
-        ON UPDATE NO ACTION
+        ON UPDATE CASCADE
         ON DELETE NO ACTION,
     CONSTRAINT richiesta_prenotazione_fkey FOREIGN KEY (prenotazione)
         REFERENCES prenotazione (numero) MATCH SIMPLE
-        ON UPDATE NO ACTION
+        ON UPDATE CASCADE
         ON DELETE NO ACTION,
-    CONSTRAINT richiesta_quantita_check CHECK (quantita > 0)
+    CONSTRAINT quantita_positiva CHECK (quantita > 0)
 )

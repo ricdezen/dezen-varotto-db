@@ -8,6 +8,8 @@ CREATE TABLE libro
     CONSTRAINT libro_pkey PRIMARY KEY (isbn),
     CONSTRAINT libro_nome_collana_fkey FOREIGN KEY (nome_collana)
         REFERENCES collana (nome) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
+    CONSTRAINT prezzo_positivo CHECK (prezzo > 0),
+    CONSTRAINT disponibili_non_negativo CHECK (disponibili >= 0)
 )
