@@ -4,6 +4,6 @@ CREATE TABLE dipendente
     nome character varying(20) NOT NULL,
     cognome character varying(20) NOT NULL,
     stipendio integer NOT NULL,
-    CONSTRAINT dipendente_pkey PRIMARY KEY (cf)
+    CONSTRAINT dipendente_pkey PRIMARY KEY (cf),
     CONSTRAINT stipendio_positivo CHECK (stipendio > 0)
 )

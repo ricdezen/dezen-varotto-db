@@ -4,8 +4,8 @@ CREATE TABLE acquisto
     data_acquisto date NOT NULL,
     importo integer NOT NULL,
     dipendente tipo_codice_fiscale NOT NULL,
-    cliente codice_fiscale,
-    numero_prenotazione integer,
+    cliente tipo_codice_fiscale,
+    prenotazione integer,
     CONSTRAINT acquisto_pkey PRIMARY KEY (numero),
     CONSTRAINT acquisto_dipendente_fkey FOREIGN KEY (dipendente)
         REFERENCES dipendente (cf) MATCH SIMPLE
@@ -18,7 +18,7 @@ CREATE TABLE acquisto
     CONSTRAINT acquisto_prenotazione_fkey FOREIGN KEY (prenotazione)
         REFERENCES prenotazione (numero) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION
+        ON DELETE NO ACTION,
     CONSTRAINT acquisto_importo_positivo CHECK (importo > 0),
-    CONSTRAINT acquisto_cliente_se_prenotazione CHECK (numero_prenotazione IS NULL OR cliente IS NOT NULL)
+    CONSTRAINT acquisto_cliente_se_prenotazione CHECK (prenotazione IS NULL OR cliente IS NOT NULL)
 )
