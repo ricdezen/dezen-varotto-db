@@ -8,4 +8,4 @@ CREATE TABLE collana
         REFERENCES editore (nome) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);

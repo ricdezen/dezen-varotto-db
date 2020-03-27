@@ -11,4 +11,4 @@ CREATE TABLE catalogo
         REFERENCES libro (isbn) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);

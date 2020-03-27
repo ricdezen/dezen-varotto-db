@@ -11,4 +11,4 @@ CREATE TABLE appartiene
         REFERENCES genere (nome) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);

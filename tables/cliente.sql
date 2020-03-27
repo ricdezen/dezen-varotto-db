@@ -6,4 +6,4 @@ CREATE TABLE cliente
     data_nascita date NOT NULL,
     telefono tipo_numero_telefono NOT NULL,
     CONSTRAINT cliente_pkey PRIMARY KEY (cf)
-)
+);

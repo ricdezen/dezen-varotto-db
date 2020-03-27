@@ -13,4 +13,4 @@ CREATE TABLE comprende
         ON UPDATE CASCADE
         ON DELETE NO ACTION,
     CONSTRAINT quantita_positiva CHECK (quantita > 0)
-)
+);

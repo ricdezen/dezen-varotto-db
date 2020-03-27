@@ -10,4 +10,4 @@ CREATE TABLE scrive
         REFERENCES libro (isbn) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);

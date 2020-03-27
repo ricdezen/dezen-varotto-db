@@ -4,4 +4,4 @@ CREATE TABLE fornitore
     nome character varying(50) NOT NULL,
     indirizzo character varying(50) NOT NULL,
     CONSTRAINT fornitore_pkey PRIMARY KEY (piva)
-)
+);

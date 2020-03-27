@@ -18,4 +18,4 @@ CREATE TABLE libro
         ON DELETE RESTRICT,
     CONSTRAINT prezzo_positivo CHECK (prezzo > 0),
     CONSTRAINT disponibili_non_negativo CHECK (disponibili >= 0)
-)
+);
