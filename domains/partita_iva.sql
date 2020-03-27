@@ -1,2 +1,0 @@
-CREATE DOMAIN partita_iva AS NUMERIC(11,0)
-CHECK (VALUE > 0);

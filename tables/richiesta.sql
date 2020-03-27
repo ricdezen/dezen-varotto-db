@@ -1,7 +1,7 @@
 CREATE TABLE richiesta
 (
     fornitore partita_iva NOT NULL,
-    libro isbn_code NOT NULL,
+    libro codice_isbn NOT NULL,
     prenotazione integer NOT NULL,
     quantita smallint NOT NULL,
     CONSTRAINT richiesta_pkey PRIMARY KEY (prenotazione, libro, fornitore),

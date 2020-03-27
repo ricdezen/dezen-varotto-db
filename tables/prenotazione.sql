@@ -4,8 +4,8 @@ CREATE TABLE prenotazione
     data_prenotazione date NOT NULL,
     prezzo smallint NOT NULL,
     stato stato_prenotazione NOT NULL,
-    nome_cliente fiscal_code NOT NULL,
-    nome_dipendente fiscal_code NOT NULL,
+    nome_cliente codice_fiscale NOT NULL,
+    nome_dipendente codice_fiscale NOT NULL,
     CONSTRAINT prenotazione_pkey PRIMARY KEY (numero),
     CONSTRAINT prenotazione_nome_cliente_fkey FOREIGN KEY (nome_cliente)
         REFERENCES cliente (cf) MATCH SIMPLE

@@ -1,7 +1,7 @@
 CREATE TABLE pubblica
 (
     editore character varying(50) NOT NULL,
-    libro isbn_code NOT NULL,
+    libro codice_isbn NOT NULL,
     data_pubblicazione date NOT NULL,
     CONSTRAINT pubblica_pkey PRIMARY KEY (editore, libro),
     CONSTRAINT pubblica_editore_fkey FOREIGN KEY (editore)

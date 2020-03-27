@@ -1,6 +1,6 @@
 CREATE TABLE libro
 (
-    isbn isbn_code NOT NULL,
+    isbn codice_isbn NOT NULL,
     titolo character varying(50) NOT NULL,
     prezzo smallint NOT NULL,
     disponibili smallint NOT NULL,

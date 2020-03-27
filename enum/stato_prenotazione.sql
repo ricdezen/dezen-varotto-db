@@ -1,1 +1,1 @@
-CREATE TYPE stato_prenotazione AS ENUM ('Transito', 'Consegnato', 'Pagato');
+CREATE TYPE stato_prenotazione AS ENUM ('Transito', 'Consegnato', 'Ritirato');

@@ -1,7 +1,7 @@
 CREATE TABLE catalogo
 (
     fornitore partita_iva NOT NULL,
-    libro isbn_code NOT NULL,
+    libro codice_isbn NOT NULL,
     CONSTRAINT catalogo_pkey PRIMARY KEY (fornitore, libro),
     CONSTRAINT catalogo_fornitore_fkey FOREIGN KEY (fornitore)
         REFERENCES fornitore (piva) MATCH SIMPLE

@@ -1,7 +1,7 @@
 CREATE TABLE scrive
 (
     autore integer NOT NULL,
-    libro isbn_code NOT NULL,
+    libro codice_isbn NOT NULL,
     CONSTRAINT scrive_autore_fkey FOREIGN KEY (autore)
         REFERENCES autore (id) MATCH SIMPLE
         ON UPDATE CASCADE

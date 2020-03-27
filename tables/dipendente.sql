@@ -1,6 +1,6 @@
 CREATE TABLE dipendente
 (
-    cf fiscal_code NOT NULL,
+    cf codice_fiscale NOT NULL,
     nome character varying(20) NOT NULL,
     cognome character varying(20) NOT NULL,
     stipendio integer NOT NULL,

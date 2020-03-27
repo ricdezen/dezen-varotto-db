@@ -1,2 +1,0 @@
-CREATE DOMAIN isbn_code AS NUMERIC(13,0)
-CHECK (VALUE > 0);

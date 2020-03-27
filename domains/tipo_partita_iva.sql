@@ -1,0 +1,2 @@
+CREATE DOMAIN tipo_partita_iva AS CHAR(11)
+CHECK (VALUE LIKE '[0-9]{15}');

@@ -1,6 +1,6 @@
 CREATE TABLE include
 (
-    libro isbn_code NOT NULL,
+    libro codice_isbn NOT NULL,
     acquisto integer NOT NULL,
     quantita smallint NOT NULL,
     CONSTRAINT include_pkey PRIMARY KEY (libro, acquisto),
