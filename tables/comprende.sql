@@ -1,6 +1,6 @@
-CREATE TABLE include
+CREATE TABLE comprende
 (
-    libro codice_isbn NOT NULL,
+    libro tipo_codice_isbn NOT NULL,
     acquisto integer NOT NULL,
     quantita smallint NOT NULL,
     CONSTRAINT include_pkey PRIMARY KEY (libro, acquisto),

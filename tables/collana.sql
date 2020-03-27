@@ -7,5 +7,5 @@ CREATE TABLE collana
     CONSTRAINT collana_nome_editore_fkey FOREIGN KEY (nome_editore)
         REFERENCES editore (nome) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION
+        ON DELETE RESTRICT
 )

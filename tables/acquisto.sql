@@ -2,7 +2,8 @@ CREATE TABLE acquisto
 (
     numero SERIAL,
     data_acquisto date NOT NULL,
-    dipendente codice_fiscale NOT NULL,
+    importo integer NOT NULL,
+    dipendente tipo_codice_fiscale NOT NULL,
     cliente codice_fiscale,
     numero_prenotazione integer,
     CONSTRAINT acquisto_pkey PRIMARY KEY (numero),
@@ -18,5 +19,6 @@ CREATE TABLE acquisto
         REFERENCES prenotazione (numero) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE NO ACTION
-    /* + Constraint tale che se numero_prenotazione NOT NULL allora cliente NOT NULL */
+    CONSTRAINT acquisto_importo_positivo CHECK (importo > 0),
+    CONSTRAINT acquisto_cliente_se_prenotazione CHECK (numero_prenotazione IS NULL OR cliente IS NOT NULL)
 )
