@@ -21,4 +21,4 @@ CREATE TABLE acquisto
         ON DELETE NO ACTION,
     CONSTRAINT acquisto_importo_positivo CHECK (importo > 0),
     CONSTRAINT acquisto_cliente_se_prenotazione CHECK (prenotazione IS NULL OR cliente IS NOT NULL)
-)
+);
