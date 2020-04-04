@@ -2,7 +2,7 @@ CREATE TABLE libro
 (
     isbn tipo_codice_isbn NOT NULL,
     titolo character varying(50) NOT NULL,
-    prezzo smallint NOT NULL,
+    prezzo numeric(11,2) NOT NULL,
     disponibili smallint NOT NULL,
     data_pubblicazione date NOT NULL,
     nome_editore character varying(50) NOT NULL,

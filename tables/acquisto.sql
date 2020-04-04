@@ -2,7 +2,7 @@ CREATE TABLE acquisto
 (
     numero SERIAL,
     data_acquisto date NOT NULL,
-    importo integer NOT NULL,
+    importo numeric(11,2) NOT NULL,
     dipendente tipo_codice_fiscale NOT NULL,
     cliente tipo_codice_fiscale,
     prenotazione integer,
