@@ -1,2 +1,2 @@
 CREATE DOMAIN tipo_numero_telefono AS character varying(15)
-CHECK (VALUE LIKE '[0-9]{3,14}');
+CHECK (VALUE SIMILAR TO '[0-9]{3,15}');

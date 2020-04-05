@@ -1,0 +1,33 @@
+DESCRIZIONE DEL PROGETTO
+Si vuole realizzare una base di dati per una libreria che è in grado di vendere al dettaglio oppure ordinare libri per uno o più clienti; si vuole tenere traccia degli acquisti, dei fornitori e del materiale archiviato in magazzino.
+
+REQUISITI STRUTTURATI
+Frasi per dipendente:
+Ogni dipendente è identificato univocamente dal codice fiscale e possiede inoltre nel database nome, cognome, stipendio annuale e data di nascita.
+Un dipendente può registrare un acquisto nel negozio oppure inoltrare un ordine nel caso in cui l’articolo richiesto non fosse disponibile in magazzino nella quantità richiesta.
+
+Frasi per cliente:
+Ogni cliente è indentificato univocamente dal codice fiscale e possiede inoltre nel database nome, cognome e data di nascita.
+Ad ogni cliente è concesso di acquistare uno o più libri nel negozio oppure ordinarne in quantità libera nel caso in cui il suddetto libro non fosse disponibile in magazzino nella quantità richiesta.
+
+Frasi per acquisto:
+Un acquisto si verifica quando un cliente richiede un libro e questo è disponibile nella quantità richiesta nel magazzino; esso è identificato univocamente dal numero di acquisto e possiede inoltre nel database data e prezzo(ovvero il totale che il cliente deve pagare).
+Ogni acquisto è collegato ad uno o più libri e si vuole tenere conto della quantità con cui i essi partecipano ad ogni acquisto.
+
+Frasi per libro:
+Ogni libro è identificato univocamente dal codice standard ISBN e possiede inoltre nel database la quantità con cui è disponibile nel magazzino, il prezzo ed il titolo.
+
+Frasi per collana:
+Ogni collana è univocamente identificata dal nome e possiede inoltre nel database la propria descrizione.
+
+Frasi per editore:
+Ogni editore è identificato univocamente da un ID e possiede inoltre nel database il suo nome; si vuole inoltre tenere traccia della data in cui ogni editore pubblica un libro.
+Frasi per genere:
+Ogni genere è identificato univocamente dal nome e possiede inoltre nel database la propria descrizione.
+
+Frasi per fornitore:
+Ogni fornitore è univocamente identificato da una partita iva e possiede inoltre nel database nome e indirizzo; ogni fornitore può fornire più libri al negozio.
+
+Frasi per prenotazione:
+Una prenotazione si verifica quando un cliente richiede un libro che o non è disponibile in magazzino, o non è disponibile nella quantità richiesta; ogni prenotazione è quindi univocamente identificata da un numero e possiede inoltre nel database data(ovvero la data in cui il cliente ritira la sua merce) e lo stato in cui si trova(es. “in transito” o “consegnata”).
+Nel momento in cui viene effettuata una prenotazione, il cliente effettua un regolare acquisto e quando essa è arrivata il cliente la ritira esibendo lo scontrino rilasciatogli in precedenza.
