@@ -1,0 +1,38 @@
+OPERAZIONI SULLE BASI DI DATI
+Lista dei libri più venduti/interrrogazione/1 volta al mese
+Lista dei distributori che forniscono più libri/interrogazione/ 1 volta al mese
+Lista di tutti i clienti con ordine in sospeso/interrogazione/ 1 volta a settimana
+Lista di tutti i distributori che forniscono un libro/interrogazione/ 30 volte al giorno
+Lista di tutti i dipendenti/interrogazione/ 1 volta al mese
+Aggiornamento dipendenti/modifica/1 volta al mese
+Aggiornamento clienti/modifica/1 volta al giorno
+Aggiornamento distributori/modifica/1 volta al mese
+Aggiornamento quantità libri disponibili/modifica/1 volta al giorno
+Aggiornamento generi,collane,autori,editori/modifica/1 volta al giorno
+Inserimento nuovo ordine/modifica/20 volte al giorno
+Inserimento nuovo libro/modifica/10 volte al giorno
+//ho provato a stimare l'ordinaria attività di una libreria in centro a padova, magari potrei aver sottostimato o sovrastimato le operazioni
+
+
+TABELLLA DEI VOLUMI
+
+CONCETTO	TIPO	VOLUME
+Dipendente	Entità	10
+Libro		Entità	10000
+Acquisto	Entità	5000
+Cliente		Entità	500
+Prenotazione	Entità	300
+Autore		Entità	5000
+Editore		Entità	50
+Collana		Entità	500
+Genere		Entità	50
+Distributore	Entità	10
+Ordine		Entità	800
+Include		Associazione	15000
+Scrive		Associazione	20000
+Appartiene	Associazione	20000
+Catalogo	Associazione	5000
+Comp.ordine	Associzione	1500
+
+
+//non ti ho messo il codice latex per fare prima, te lo fornirò appena posso
