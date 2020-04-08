@@ -1,0 +1,13 @@
+Entità			Attributi					Identificatore
+Acquisto immediato	//						Acquisto(ext.)
+Prenotazione		Dataritiro,Stato				Acquisto(ext.)		
+Cliente			ID,Nome,Cognome,Numerotel.,Mail,Datadinascita	ID	
+Dipendente		CF,Nome,Cognome,Datadinascita,Stipendio		CF		
+Libro			ISBN,Titolo,Prezzo,Disponibili			ISBN
+Autore			ID,Nome,Cognome					ID			
+Collana			Nome,Descrizione				Nome		
+Editore			Nome,Descrizione				Nome
+Genere			Nome,Descrizione				Nome
+Distributore 		P.IVA,Nome,Indirizzo,Sitoweb,Numtelefono	P.IVA	
+Ordine			Numero,Data					Numero
+Acquisto		Numero,Prezzo,Data				Numero
