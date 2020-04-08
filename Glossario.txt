@@ -1,0 +1,14 @@
+Termine			Descrizione								Relazioni con
+
+Acquisto immediato	Acquisto effettuato in negozio con consegna immediata della merce	Cliente,Acquisto
+Prenotazione		Acquisto effettuato in negozio con consegna futura della merce		Cliente,Acquisto
+Cliente			Colui che compra la merce						Acquisto immediato,Prenotazione
+Dipendente		Colui che lavora per la libreria					Acquisto,Ordine					
+Libro			Libro venduto dal negozio						Acquisto,Autore,Collana,Editore,Genere,Distributore,Ordine
+Autore			Colui che scrive il libro						Libro
+Collana			Collana che racchiude più libri						Libro,Editore					
+Editore			Azienda che pubblica e distribuisce libri				Libro,Collana
+Genere			Breve descrizione delle tematiche trattate da un libro			Libro
+Distributore 		Azienda che fornisce la merce al negozio				Libro,Ordine
+Ordine			Ordine di approviggionamento al fornitore				Libro,Distributore,Dipendente
+Acquisto		Generalizzazione totale di acquisto immediato e prenotazione		Dipendente,Acquisto immediato,Prenotazione
