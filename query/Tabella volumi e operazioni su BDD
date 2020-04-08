@@ -1,14 +1,13 @@
 OPERAZIONI SULLE BASI DI DATI
-Calcolo del bilancio/interrrogazione/1 volta al mese
-Nomi delle case editrici che han venduto libri in un giorno/interrogazione/ 1 volta al giorno
-Il dipendente che ha venduto più libri/interrogazione/ 1 volta a settimana
-Lista di tutti i distributori che forniscono un libro/interrogazione/ 30 volte al giorno
-Il fornitore che fornisce il libro al minor prezzo/interrogazione/ 30 volte al giorno
-Genere più venduto in un determinato arco temporale/interrogazione/ 1 volta al mese
-Lista di tutti i libri che appartengono ad un determinato genere/interrogazione/1 volta al mese
-Lista di tutti i libri prenotati che non sono stati ancora accantonati/interrogazione/1 volta al giorno
-Lista dei clienti che hanno effettuato più acquisti(i più "fedeli)/interrogazione/1 volta al mese
-//le query 4 e 5 sono sinonimi,proporrei quindi di mettere solo quella che ti restituisce la lista di tutti i fornitori, poi è ovvio che vado ad ordinare da quello più conveniente, ho aggiunto quinndi questa nuova query, secondo me ci starebbe.
+1)Calcolo del bilancio/interrrogazione/1 volta al mese
+2)Nomi delle case editrici che han venduto libri in un giorno/interrogazione/ 1 volta al giorno
+3)Il dipendente che ha venduto più libri/interrogazione/ 1 volta a settimana
+4)Il fornitore che fornisce il libro al minor prezzo/interrogazione/ 30 volte al giorno
+5)Genere più venduto in un determinato arco temporale/interrogazione/ 1 volta al mese
+6)Lista di tutti i libri che appartengono ad un determinato genere/interrogazione/1 volta al mese
+7)Lista di tutti i libri prenotati che non sono stati ancora accantonati/interrogazione/1 volta al giorno
+8)Lista dei generi scritti da un'autore/interrogazione/10 volte al giorno
+9)Lista dei generi racchiusi in una determinata collana/interrogazione/10 volte al giorno
 Aggiornamento dipendenti/modifica/1 volta al mese
 Aggiornamento clienti/modifica/1 volta al giorno
 Aggiornamento distributori/modifica/1 volta al mese
@@ -16,7 +15,7 @@ Aggiornamento quantità libri disponibili/modifica/1 volta al giorno
 Aggiornamento generi,collane,autori,editori/modifica/1 volta al giorno
 Inserimento nuovo ordine/modifica/20 volte al giorno
 Inserimento nuovo libro/modifica/10 volte al giorno
-//ho provato a stimare l'ordinaria attività di una libreria in centro a padova, magari potrei aver sottostimato o sovrastimato le operazioni
+
 
 
 TABELLLA DEI VOLUMI
