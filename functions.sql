@@ -87,3 +87,17 @@ RETURNS TABLE(
 	ON A.libro = L.isbn
 	WHERE A.genere = book;
 $$ LANGUAGE SQL;
+
+/*
+QUERY 7 ----------------------------------------
+*/
+
+/*
+	Query 8
+*/
+CREATE FUNCTION generi_autore (author integer)
+RETURNS TABLE("Genere" character varying) AS $$
+    SELECT DISTINCT genere AS "Genere"
+	FROM scrive NATURAL JOIN appartiene
+	WHERE autore = author;
+$$ LANGUAGE SQL;
