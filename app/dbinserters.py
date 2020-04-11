@@ -1,19 +1,27 @@
 import PySide2
 from PySide2 import QtCore, QtWidgets
-from PySide2.QtWidgets import QAction, QApplication, QDateEdit, QDoubleSpinBox, QErrorMessage, QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QPushButton, QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PySide2.QtWidgets import QAction, QDialog, QApplication, QDateEdit, QDoubleSpinBox, QErrorMessage, QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QPushButton, QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import sys
 import psycopg2
 from PySide2.QtCore import QDate
 
+# id
 FIND_CLIENTE = 'SELECT id FROM cliente WHERE id = %s;'
+# cf
 FIND_DIPENDENTE = 'SELECT cf FROM dipendente WHERE cf = %s;'
+# isbn
 FIND_QUANTITA = 'SELECT disponibili FROM libro WHERE isbn = %s;'
+# date, money, dipendente
 INSERT_ACQUISTO = 'INSERT INTO acquisto (data_acquisto, importo, dipendente) VALUES (%s, %s, %s) RETURNING numero;'
+# num, cliente
 INSERT_IMMEDIATO = 'INSERT INTO a_immediato (numero, cliente) VALUES (%s, %s);'
+# num, book, qty
 INSERT_COMPRENDE = 'INSERT INTO comprende (acquisto, libro, quantita) VALUES (%s, %s, %s);'
+# isbn, qty_to_subtract, isbn
+DECREASE_LIBRO = 'UPDATE libro SET disponibili = ((SELECT disponibili FROM libro WHERE isbn = %s) - %s) WHERE isbn = %s;'
 
 
-class AcquistoForm(QWidget):
+class AcquistoForm(QDialog):
     '''
     Widget per l'inserimento di un acquisto immediato.
     '''
@@ -25,6 +33,9 @@ class AcquistoForm(QWidget):
                 Connection to the database.
         '''
         super().__init__()
+        self.setWindowTitle('Aggiungi Acquisto')
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+
         self.conn = conn
         self.cursor = conn.cursor()
 
@@ -69,7 +80,8 @@ class AcquistoForm(QWidget):
         self.table.setHorizontalHeaderLabels(self.labels)
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(
+            2, QHeaderView.ResizeToContents)
 
         self.confirm_button = QPushButton('Conferma')
         self.confirm_button.clicked.connect(self.post_acquisto)
@@ -101,9 +113,9 @@ class AcquistoForm(QWidget):
             self.table.setItem(row, 1, QTableWidgetItem(str(self.books[book])))
             self.table.setCellWidget(row, 2, button)
 
-    def verify_money(self):
+    def verif_money(self):
         if not self.importo_field.value():
-            self.show_error('Importo pari a 0')
+            self._show_error('Importo pari a 0')
             return False
         return True
 
@@ -113,51 +125,55 @@ class AcquistoForm(QWidget):
         returns False, or returns True if all the books are ok to sell right now.
         '''
         if len(self.books.items()) == 0:
-            self.show_error('Non ci sono libri nell\'acquisto')
+            self._show_error('Non ci sono libri nell\'acquisto')
             return False
         for book, qty in self.books.items():
             self.cursor.execute(FIND_QUANTITA, (book,))
             result = self.cursor.fetchall()
             if not result:
-                self.show_error('\'{}\' non è un libro valido.'.format(book))
+                self._show_error('\'{}\' non è un libro valido.'.format(book))
                 return False
             stored = result[0][0]
             if stored < qty:
-                self.show_error('Non ci sono abbastanza libri {}'.format(book))
+                self._show_error(
+                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}'.format(qty, book, stored))
                 return False
         return True
 
-    def verif_client_dip (self):
+    def verif_client_dip(self):
         '''
         Returns false and displays and error message if cliente and dipendente are
         not valid tuples in the database, returns true if they are ok
         '''
         cliente = self.client_field.text()
-        if cliente :
-            if not cliente.isdigit() :
-                self.show_error('Il codice del Cliente deve essere numerico.')
+        if cliente:
+            if not cliente.isdigit():
+                self._show_error('Il codice del Cliente deve essere numerico.')
                 return False
             self.cursor.execute(FIND_CLIENTE, (cliente,))
             result = self.cursor.fetchall()
             if not result or not result[0][0]:
-                self.show_error('Cliente {} non esiste.'.format(cliente))
+                self._show_error('Cliente {} non esiste.'.format(cliente))
                 return False
 
         dipendente = self.dip_field.text()
-        if not dipendente :
-            self.show_error('Il Dipendente non può essere vuoto.')
+        if not dipendente:
+            self._show_error('Il Dipendente non può essere vuoto.')
             return False
         self.cursor.execute(FIND_DIPENDENTE, (dipendente,))
         result = self.cursor.fetchall()
         if not result or not result[0][0]:
-            self.show_error('Dipendente {} non esiste.'.format(dipendente))
+            self._show_error('Dipendente {} non esiste.'.format(dipendente))
             return False
         return True
 
-    def post_acquisto (self) :
-        if not self.verif_money() : return
-        if not self.verif_qty() : return
-        if not self.verif_client_dip() : return
+    def post_acquisto(self):
+        if not self.verif_money():
+            return
+        if not self.verif_qty():
+            return
+        if not self.verif_client_dip():
+            return
         cliente = self.client_field.text() if self.client_field.text().strip() else None
         importo = self.importo_field.value()
         self.cursor.execute(INSERT_ACQUISTO, (
@@ -167,15 +183,64 @@ class AcquistoForm(QWidget):
         ))
         new_id = self.cursor.fetchall()[0][0]
         self.cursor.execute(INSERT_IMMEDIATO, (new_id, cliente))
-        for book in self.books.keys() :
-            self.cursor.execute(INSERT_COMPRENDE, (new_id, book, self.books[book]))
+        for book in self.books.keys():
+            self.cursor.execute(
+                INSERT_COMPRENDE, (new_id, book, self.books[book]))
         self.conn.commit()
+        self._show_confirm()
+        self.accept()
 
-    def show_error(self, msg=''):
+    def _show_confirm(self):
+        dialog = _ScalaAcquistiDialog(self.books, self.conn)
+        dialog.setWindowTitle('Rimozione libri')
+        dialog.exec_()
+
+    def _show_error(self, msg=''):
         dialog = QMessageBox()
         dialog.setWindowTitle('ERRORE')
         dialog.setText(msg)
         dialog.exec_()
+
+
+class _ScalaAcquistiDialog(QDialog):
+    def __init__(self, books: dict, conn):
+        super().__init__()
+        self.conn = conn
+        self.cursor = conn.cursor()
+        self.books = books
+
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+
+        self.header_text = QLabel(
+            'Vuoi sottrarre al database i libri dell\'acquisto?')
+        self.body_text = QLabel(self._make_body())
+
+        self.yes_btn = QPushButton('Sì')
+        self.yes_btn.clicked.connect(self._decrease_books)
+
+        self.no_btn = QPushButton('No')
+        self.no_btn.clicked.connect(self.reject())
+
+        self.bot_buttons = QHBoxLayout()
+        self.bot_buttons.addWidget(self.yes_btn)
+        self.bot_buttons.addWidget(self.no_btn)
+
+        self.gen_layout = QVBoxLayout()
+        self.gen_layout.addWidget(self.header_text)
+        self.gen_layout.addWidget(self.body_text)
+        self.gen_layout.addLayout(self.bot_buttons)
+
+        self.setLayout(self.gen_layout)
+
+    def _make_body(self):
+        return '\n'.join(['{} x {}'.format(k, v) for k, v in self.books.items()])
+
+    def _decrease_books(self):
+        for book, qty in self.books.items():
+            self.cursor.execute(DECREASE_LIBRO, (book, qty, book))
+        self.conn.commit()
+        self.accept()
 
 
 if __name__ == '__main__':

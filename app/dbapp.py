@@ -1,10 +1,15 @@
 import PySide2
 from PySide2 import QtCore, QtWidgets
-from PySide2.QtWidgets import QAction, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QSizePolicy, QTableWidget, QTableWidgetItem, QWidget
+from PySide2.QtWidgets import QAction, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QSizePolicy, QTableWidget, QTableWidgetItem, QWidget
 import sys
 import psycopg2
 import dbconn
 import login
+import dbinserters
+from dbinserters import AcquistoForm
+
+# Label : non-modal dialog class
+INSERTIONS = {'Acquisto' : AcquistoForm}
 
 GET_TABLES_QUERY = 'SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\');'
 GET_VIEWS_QUERY = 'SELECT viewname FROM pg_catalog.pg_views WHERE schemaname NOT IN (\'pg_catalog\',\'information_schema\');'
@@ -27,7 +32,8 @@ class TableWidget(QWidget):
         # Search bar
         self.search_label = QLabel('Cerca')
         self.search_bar = QLineEdit()
-        self.search_bar.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
+        self.search_bar.setSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
         self.search_bar.textChanged[str].connect(self.update_table)
         self.search_layout = QHBoxLayout()
         self.search_layout.addWidget(self.search_label)
@@ -63,16 +69,17 @@ class TableWidget(QWidget):
 
     def load_table(self):
         self.table.clear()
-        while self.table.rowCount() > 0 :
+        while self.table.rowCount() > 0:
             self.table.removeRow(0)
         self.item_count = 0
         self.table.setColumnCount(len(self.labels))
         self.table.setHorizontalHeaderLabels(self.labels)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        for row in self.values_view :
+        for row in self.values_view:
             self.table.insertRow(self.item_count)
             for i in range(len(self.labels)):
-                self.table.setItem(self.item_count, i, QTableWidgetItem(str(row[i])))
+                self.table.setItem(self.item_count, i,
+                                   QTableWidgetItem(str(row[i])))
             self.item_count += 1
 
     def filter_rows(self):
@@ -80,8 +87,8 @@ class TableWidget(QWidget):
         Filters the data to display based on the string in self.search_bar
         '''
         self.values_view = []
-        for row in self.values :
-            if self.search_bar.text().lower() in str(row).lower() :
+        for row in self.values:
+            if self.search_bar.text().lower() in str(row).lower():
                 self.values_view.append(row)
 
 
@@ -104,18 +111,27 @@ class DbMainWindow(QMainWindow):
 
         # Menu init
         self.menu = self.menuBar()
+
         self.table_menu = self.menu.addMenu('Tabelle')
         for table in self.table_list:
             action = QAction(table, self)
-            callback = self.__make_show_table(table)
+            callback = self._make_show_table(table)
             action.triggered.connect(callback)
             self.table_menu.addAction(action)
+
         self.view_menu = self.menu.addMenu('Viste')
         for view in self.view_list:
             action = QAction(view, self)
-            callback = self.__make_show_table(view)
+            callback = self._make_show_table(view)
             action.triggered.connect(callback)
             self.view_menu.addAction(action)
+
+        self.insert_menu = self.menu.addMenu('Inserimenti')
+        for label, dialogclass in INSERTIONS.items():
+            action = QAction(label, self)
+            callback = self._make_show_dialog(dialogclass)
+            action.triggered.connect(callback)
+            self.insert_menu.addAction(action)
 
         self.connection.commit()
 
@@ -124,7 +140,7 @@ class DbMainWindow(QMainWindow):
         self.table_widget = TableWidget()
         self.setCentralWidget(self.table_widget)
 
-    def __make_show_table(self, table):
+    def _make_show_table(self, table):
         def show_table():
             '''
             Display the content of a table in the main table view
@@ -132,19 +148,26 @@ class DbMainWindow(QMainWindow):
             Parameters:
             table : str -- The table name to show, will be directly inserted in the query
             '''
-            print(table)
+            # print(table)
             self.cursor.execute(GET_ALL_FROM_X.format(table))
             labels = [item[0] for item in self.cursor.description]
-            print(labels)
+            # print(labels)
             self.table_widget.populate(labels, self.cursor.fetchall())
             self.connection.commit()
         return show_table
 
-    def __show_error(self, error: int):
-        '''
-        # TODO
-        '''
-        pass
+    def _make_show_dialog(self, dialogclass):
+        def show_dialog() :
+            dialog = dialogclass(self.connection)
+            dialog.setWindowTitle('Rimozione libri')
+            dialog.exec_()
+        return show_dialog
+
+    def _show_error(self, msg=''):
+        dialog = QMessageBox()
+        dialog.setWindowTitle('ERRORE')
+        dialog.setText(msg)
+        dialog.exec_()
 
 
 def display_app(application, connection):
@@ -160,12 +183,12 @@ if __name__ == '__main__':
     application = QtWidgets.QApplication([])
     # TODO hide password
     ssh, params = login.show_dialog()
-    if ssh :
+    if ssh:
         tunnel, conn = dbconn.connect_to_dei_ssh(**params)
         result = display_app(application, conn)
         conn.close()
         tunnel.close()
-    else :
+    else:
         conn = dbconn.connect_generic(**params)
         result = display_app(application, conn)
         conn.close()
