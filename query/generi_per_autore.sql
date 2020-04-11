@@ -1,6 +1,6 @@
 /*
 Query 8: Lista dei generi scritti da un'autore
 */
-SELECT genere AS "Genere"
+SELECT DISTINCT genere AS "Genere"
 FROM scrive NATURAL JOIN appartiene
-WHERE autore = 'X';
+WHERE autore = XXXX;
