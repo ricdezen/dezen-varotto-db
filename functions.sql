@@ -101,3 +101,14 @@ RETURNS TABLE("Genere" character varying) AS $$
 	FROM scrive NATURAL JOIN appartiene
 	WHERE autore = author;
 $$ LANGUAGE SQL;
+
+/*
+	Query 9
+*/
+CREATE FUNCTION generi_collana (coll character varying)
+RETURNS TABLE("Genere" character varying) AS $$
+    SELECT DISTINCT genere AS "Genere"
+	FROM libro JOIN appartiene
+	ON libro.isbn = appartiene.libro
+	WHERE nome_collana = coll;
+$$ LANGUAGE SQL;
