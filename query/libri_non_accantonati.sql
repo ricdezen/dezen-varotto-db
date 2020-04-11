@@ -1,5 +1,5 @@
 /*
-QUERY 6
+QUERY ??
 Il codice ISBN e quantità dei libri prenotati che ancora non sono stati accantonati, e il numero cliente di chi li ha ordinati.
 */
 SELECT C.libro AS "Libro", C.quantita AS "Quantità", A.cliente AS "Cliente"
