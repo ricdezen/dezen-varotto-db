@@ -1,5 +1,5 @@
 /*
-QUERY 7
+QUERY 5
 Ottenere il bilancio economico di un certo anno, inteso come il totale vendite di libri,
 meno i costi di approvvigionamento di libri, meno gli stipendi degli impiegati.
 */
