@@ -75,7 +75,7 @@ $$ LANGUAGE SQL;
 /*
 	Query 6
 */
-CREATE FUNCTION libri_genere (book tipo_codice_isbn)
+CREATE FUNCTION libri_genere (genre character varying)
 RETURNS TABLE(
 	"ISBN" tipo_codice_isbn,
 	"Titolo" character varying,
@@ -85,7 +85,7 @@ RETURNS TABLE(
 	FROM appartiene AS A
 	JOIN libro AS L
 	ON A.libro = L.isbn
-	WHERE A.genere = book;
+	WHERE A.genere = genre;
 $$ LANGUAGE SQL;
 
 /*
