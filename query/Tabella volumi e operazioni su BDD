@@ -1,9 +1,9 @@
 OPERAZIONI SULLE BASI DI DATI
-1)Calcolo del bilancio/interrrogazione/1 volta al mese
-2)Nomi delle case editrici che han venduto libri in un giorno/interrogazione/ 1 volta al giorno
-3)Il dipendente che ha venduto più libri/interrogazione/ 1 volta a settimana
-4)Il fornitore che fornisce il libro al minor prezzo/interrogazione/ 30 volte al giorno
-5)Genere più venduto in un determinato arco temporale/interrogazione/ 1 volta al mese
+1)Il dipendente che ha venduto più libri/interrogazione/ 1 volta a settimana
+2)Il fornitore che fornisce il libro al minor prezzo/interrogazione/ 30 volte al giorno
+3)Genere più venduto in un determinato arco temporale/interrogazione/ 1 volta al mese
+4)Nomi delle case editrici che han venduto libri in un giorno/interrogazione/ 1 volta al giorno
+5)Calcolo del bilancio/interrrogazione/1 volta al mese
 6)Lista di tutti i libri che appartengono ad un determinato genere/interrogazione/1 volta al mese
 7)Lista di tutti i libri prenotati che non sono stati ancora accantonati/interrogazione/1 volta al giorno
 8)Lista dei generi scritti da un'autore/interrogazione/10 volte al giorno
