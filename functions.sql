@@ -62,7 +62,7 @@ RETURNS TABLE("Casa Editrice" character varying(20)) AS $$
 $$ LANGUAGE SQL;
 
 /*
-	Query 7
+	Query 5
 */
 CREATE FUNCTION bilancio () RETURNS numeric(11,2) AS $$
 	SELECT
@@ -73,7 +73,7 @@ CREATE FUNCTION bilancio () RETURNS numeric(11,2) AS $$
 $$ LANGUAGE SQL;
 
 /*
-	Query 8
+	Query 6
 */
 CREATE FUNCTION libri_genere (book tipo_codice_isbn)
 RETURNS TABLE(
