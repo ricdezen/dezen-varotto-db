@@ -1,21 +1,17 @@
-import PySide2
+import PySide2, sys, psycopg2, dbconn, login
 from PySide2 import QtCore, QtWidgets
 from PySide2.QtWidgets import QAction, QDateEdit, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem, QWidget
-import sys
-import psycopg2
-import dbconn
-import login
-import acquisto_ins
-import prenotaz_ins
 from acquisto_ins import AcquistoForm
 from prenotaz_ins import PrenotazioneForm
+from ordine_ins import OrdineForm
 from tablewidget import TableWidget
 from querywidget import QueryWidget
 
 # Label : non-modal dialog class
 INSERTIONS = {
-    'Aggiunta Acquisto': AcquistoForm,
-    'Aggiunta Prenotazione': PrenotazioneForm
+    'Registrazione Acquisto': AcquistoForm,
+    'Registrazione Prenotazione': PrenotazioneForm,
+    'Registrazione Ordine' : OrdineForm
 }
 
 # QUERIES = {Label : (function-name, {params-dict})}
@@ -40,7 +36,7 @@ class DbMainWindow(QMainWindow):
 
     def __init__(self, connection):
         '''
-        #TODO
+        Main window for the program, handles the basic table/view queries
         '''
         super().__init__()
         # Param refs
@@ -138,7 +134,6 @@ def display_app(application, connection):
 
 if __name__ == '__main__':
     application = QtWidgets.QApplication([])
-    # TODO hide password
     ssh, params = login.show_dialog()
     if ssh:
         tunnel, conn = dbconn.connect_to_dei_ssh(**params)

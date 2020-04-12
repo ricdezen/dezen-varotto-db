@@ -112,6 +112,22 @@ class PrenotazioneForm(QDialog):
             self.table.setItem(row, 1, QTableWidgetItem(str(self.books[book])))
             self.table.setCellWidget(row, 2, button)
 
+    def verif_libri(self):
+        '''
+        Shows error messages based on the validity of inserted books, and
+        returns False, or returns True if all the books are ok to sell right now.
+        '''
+        if len(self.books.items()) == 0:
+            self._show_error('Non ci sono libri nell\'acquisto')
+            return False
+        for book in self.books.keys():
+            self.cursor.execute('SELECT * FROM libro WHERE isbn = %s', (book,))
+            result = self.cursor.fetchall()
+            if not result:
+                self._show_error('\'{}\' non è un libro valido.'.format(book))
+                return False
+        return True
+
     def verif_money(self):
         if not self.importo_field.value():
             self._show_error('Importo pari a 0')
@@ -151,6 +167,8 @@ class PrenotazioneForm(QDialog):
     def post_prenotazione(self):
         if not self.verif_money():
             return
+        if not self.verif_libri():
+            return
         if not self.verif_client_dip():
             return
         cliente = self.client_field.text().strip(
@@ -185,3 +203,16 @@ class PrenotazioneForm(QDialog):
         dialog.setWindowTitle('ERRORE')
         dialog.setText(msg)
         dialog.exec_()
+
+if __name__ == '__main__':
+    application = QtWidgets.QApplication([])
+
+    pwd = input('Password: ')
+    conn = psycopg2.connect(database='postgres',
+                            user='postgres', password=pwd, port=5433)
+
+    widget = PrenotazioneForm(conn)
+    widget.resize(960, 720)
+    widget.show()
+
+    sys.exit(application.exec_())
