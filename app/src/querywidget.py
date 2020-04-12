@@ -27,7 +27,7 @@ class QueryWidget(QWidget):
                 self.input.setDisplayFormat("MM/dd/yyyy")
                 self.input.setCalendarPopup(True)
             if self.param[1] == QSpinBox :
-                self.input.setMaximum(999999999999999)
+                self.input.setMaximum(999999999)
             self.button = QPushButton('Esegui')
             self.button.clicked.connect(self._run_query)
             self.row = QHBoxLayout()
