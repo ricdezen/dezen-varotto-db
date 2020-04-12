@@ -90,7 +90,9 @@ class ClienteForm(QDialog):
         cognome = self.cognome_field.text().strip()
         data = self.date_field.date().toString('MM/dd/yyyy')
         phone = self.phone_field.text().strip()
+        if not phone : phone = None
         email = self.email_field.text().strip()
+        if not email : email = None
 
         self.cursor.execute(INSERT_CLIENTE, (
             nome,
