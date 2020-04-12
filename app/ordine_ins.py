@@ -62,7 +62,7 @@ class OrdineForm(QDialog):
         self.form_layout.addRow('Importo: ', self.importo_field)
 
         self.confirm_button = QPushButton('Conferma')
-        self.confirm_button.clicked.connect(self.post_acquisto)
+        self.confirm_button.clicked.connect(self.post_ordine)
 
         self.gen_layout.addLayout(self.form_layout)
         self.gen_layout.addWidget(self.confirm_button)
@@ -108,7 +108,7 @@ class OrdineForm(QDialog):
             return False
         return True
 
-    def post_acquisto(self):
+    def post_ordine(self):
         if not self.verif_money():
             return
         if not self.verif_dip():

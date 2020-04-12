@@ -6,12 +6,14 @@ from prenotaz_ins import PrenotazioneForm
 from ordine_ins import OrdineForm
 from tablewidget import TableWidget
 from querywidget import QueryWidget
+from cliente_ins import ClienteForm
 
 # Label : non-modal dialog class
 INSERTIONS = {
     'Registrazione Acquisto': AcquistoForm,
     'Registrazione Prenotazione': PrenotazioneForm,
-    'Registrazione Ordine' : OrdineForm
+    'Registrazione Ordine' : OrdineForm,
+    'Registrazione Cliente' : ClienteForm
 }
 
 # QUERIES = {Label : (function-name, {params-dict})}
