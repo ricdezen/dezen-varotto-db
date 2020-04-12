@@ -1,6 +1,6 @@
 import PySide2
 from PySide2 import QtCore, QtWidgets
-from PySide2.QtWidgets import QAction, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QSizePolicy, QTableWidget, QTableWidgetItem, QWidget
+from PySide2.QtWidgets import QAction, QDateEdit, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMainWindow, QMessageBox, QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem, QWidget
 import sys
 import psycopg2
 import dbconn
@@ -9,89 +9,31 @@ import acquisto_ins
 import prenotaz_ins
 from acquisto_ins import AcquistoForm
 from prenotaz_ins import PrenotazioneForm
+from tablewidget import TableWidget
+from querywidget import QueryWidget
 
 # Label : non-modal dialog class
-INSERTIONS = {'Aggiunta Acquisto': AcquistoForm, 'Aggiunta Prenotazione': PrenotazioneForm}
+INSERTIONS = {
+    'Aggiunta Acquisto': AcquistoForm,
+    'Aggiunta Prenotazione': PrenotazioneForm
+}
+
+# QUERIES = {Label : (function-name, {params-dict})}
+# params-dict = {param-name : widget}
+QUERIES = {
+    'Bilancio': ('bilancio', tuple()),
+    'Editori con vendite per giorno': ('case_editrici_vendite', ('Data: ', QDateEdit)),
+    'Dipendente più attivo' : ('dipendente_max_vendite', tuple()),
+    'Fornitore più economico libro' : ('fornitore_min_prezzo', ('Libro: ', QLineEdit)),
+    'Genere più venduto' : ('genere_max_venduto', tuple()),
+    'Generi per autore' : ('generi_autore', ('Autore: ', QSpinBox)),
+    'Generi per collana' : ('generi_collana', ('Collana: ', QLineEdit)),
+    'Libri per genere' : ('libri_genere', ('Genere: ', QLineEdit))
+}
 
 GET_TABLES_QUERY = 'SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\');'
 GET_VIEWS_QUERY = 'SELECT viewname FROM pg_catalog.pg_views WHERE schemaname NOT IN (\'pg_catalog\',\'information_schema\');'
 GET_ALL_FROM_X = 'SELECT * FROM {};'
-
-
-class TableWidget(QWidget):
-
-    def __init__(self):
-        '''
-        # TODO
-        '''
-        super().__init__()
-
-        # Data
-        self.values = []
-        self.values_view = []
-        self.labels = []
-
-        # Search bar
-        self.search_label = QLabel('Cerca')
-        self.search_bar = QLineEdit()
-        self.search_bar.setSizePolicy(
-            QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
-        self.search_bar.textChanged[str].connect(self.update_table)
-        self.search_layout = QHBoxLayout()
-        self.search_layout.addWidget(self.search_label)
-        self.search_layout.addWidget(self.search_bar)
-
-        # Table
-        self.table = QTableWidget()
-        self.item_count = 0
-
-        # Layout
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addLayout(self.search_layout)
-        self.layout.addWidget(self.table)
-        self.setLayout(self.layout)
-
-    def populate(self, labels: list, values: list):
-        '''
-        Method used to populate the table with the results of a query
-        Parameters:
-        labels : list -- The list of labels.
-        values : list -- A list of tuples containing the values to display. len(values[i]) = len(labels) for each i
-        '''
-        self.labels = labels
-        self.values = values
-        self.update_table()
-
-    def update_table(self):
-        '''
-        Updates the table by filtering the rows and reloading the table
-        '''
-        self.filter_rows()
-        self.load_table()
-
-    def load_table(self):
-        self.table.clear()
-        while self.table.rowCount() > 0:
-            self.table.removeRow(0)
-        self.item_count = 0
-        self.table.setColumnCount(len(self.labels))
-        self.table.setHorizontalHeaderLabels(self.labels)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        for row in self.values_view:
-            self.table.insertRow(self.item_count)
-            for i in range(len(self.labels)):
-                self.table.setItem(self.item_count, i,
-                                   QTableWidgetItem(str(row[i])))
-            self.item_count += 1
-
-    def filter_rows(self):
-        '''
-        Filters the data to display based on the string in self.search_bar
-        '''
-        self.values_view = []
-        for row in self.values:
-            if self.search_bar.text().lower() in str(row).lower():
-                self.values_view.append(row)
 
 
 class DbMainWindow(QMainWindow):
@@ -128,6 +70,13 @@ class DbMainWindow(QMainWindow):
             action.triggered.connect(callback)
             self.view_menu.addAction(action)
 
+        self.query_menu = self.menu.addMenu('Interrogazioni')
+        for label, info in QUERIES.items():
+            action = QAction(label, self)
+            callback = self._make_show_query(info)
+            action.triggered.connect(callback)
+            self.query_menu.addAction(action)
+
         self.insert_menu = self.menu.addMenu('Inserimenti')
         for label, dialogclass in INSERTIONS.items():
             action = QAction(label, self)
@@ -150,13 +99,19 @@ class DbMainWindow(QMainWindow):
             Parameters:
             table : str -- The table name to show, will be directly inserted in the query
             '''
-            # print(table)
             self.cursor.execute(GET_ALL_FROM_X.format(table))
             labels = [item[0] for item in self.cursor.description]
-            # print(labels)
+            self.table_widget = TableWidget()
+            self.setCentralWidget(self.table_widget)
             self.table_widget.populate(labels, self.cursor.fetchall())
             self.connection.commit()
         return show_table
+    
+    def _make_show_query(self, info):
+        def show_query():
+            self.query_widget = QueryWidget(info, self.connection)
+            self.setCentralWidget(self.query_widget)
+        return show_query
 
     def _make_show_dialog(self, dialogclass):
         def show_dialog():
