@@ -1,6 +1,7 @@
 import sys
 import dbconn
 from PySide2.QtWidgets import QApplication, QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QStackedLayout, QVBoxLayout
+from PySide2 import QtCore
 
 
 class GenericForm(QDialog):
@@ -19,6 +20,8 @@ class GenericForm(QDialog):
         parent -- The parent app if any.
         '''
         super(GenericForm, self).__init__(parent)
+        self.setWindowTitle('Login Locale')
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.result = result
 
@@ -76,6 +79,8 @@ class SshForm(QDialog):
         parent -- The parent app if any.
         '''
         super(SshForm, self).__init__(parent)
+        self.setWindowTitle('Login Dbstud (SSH)')
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.result = result
         # Widgets for ssh layout
