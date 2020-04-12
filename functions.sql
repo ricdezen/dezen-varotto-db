@@ -1,7 +1,7 @@
 /*
 	Query 1
 */
-CREATE FUNCTION dipendente_piu_vendite ()
+CREATE FUNCTION dipendente_max_vendite ()
 RETURNS TABLE(
 	"Codice Fiscale" tipo_codice_fiscale,
 	"Nome" character varying(20),
@@ -32,7 +32,7 @@ $$ LANGUAGE SQL;
 /*
 	Query 3
 */
-CREATE FUNCTION genere_piu_venduto ()
+CREATE FUNCTION genere_max_venduto ()
 RETURNS TABLE(
 	"Genere più venduto" character varying,
 	"Descrizione" text,
