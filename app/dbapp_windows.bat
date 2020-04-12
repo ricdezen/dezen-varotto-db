@@ -1,2 +1,2 @@
 @ECHO OFF
-start pythonw dbapp.py
+start pythonw src/main.py

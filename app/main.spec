@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['dbapp.py'],
+a = Analysis(['src\\main.py'],
              pathex=['C:\\Users\\Administrator\\Documents\\GitHub\\dezen-varotto-db\\app'],
              binaries=[],
              datas=[],
@@ -21,7 +21,7 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='dbapp',
+          name='main',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
@@ -34,4 +34,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='dbapp')
+               name='main')
