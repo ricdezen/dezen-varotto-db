@@ -5,11 +5,13 @@ import sys
 import psycopg2
 import dbconn
 import login
-import dbinserters
-from dbinserters import AcquistoForm
+import acquisto_ins
+import prenotaz_ins
+from acquisto_ins import AcquistoForm
+from prenotaz_ins import PrenotazioneForm
 
 # Label : non-modal dialog class
-INSERTIONS = {'Acquisto' : AcquistoForm}
+INSERTIONS = {'Aggiunta Acquisto': AcquistoForm, 'Aggiunta Prenotazione': PrenotazioneForm}
 
 GET_TABLES_QUERY = 'SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\');'
 GET_VIEWS_QUERY = 'SELECT viewname FROM pg_catalog.pg_views WHERE schemaname NOT IN (\'pg_catalog\',\'information_schema\');'
@@ -157,7 +159,7 @@ class DbMainWindow(QMainWindow):
         return show_table
 
     def _make_show_dialog(self, dialogclass):
-        def show_dialog() :
+        def show_dialog():
             dialog = dialogclass(self.connection)
             dialog.setWindowTitle('Rimozione libri')
             dialog.exec_()

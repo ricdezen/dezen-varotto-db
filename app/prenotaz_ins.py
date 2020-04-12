@@ -9,19 +9,15 @@ from PySide2.QtCore import QDate
 FIND_CLIENTE = 'SELECT id FROM cliente WHERE id = %s;'
 # cf
 FIND_DIPENDENTE = 'SELECT cf FROM dipendente WHERE cf = %s;'
-# isbn
-FIND_QUANTITA = 'SELECT disponibili FROM libro WHERE isbn = %s;'
 # date, money, dipendente
 INSERT_ACQUISTO = 'INSERT INTO acquisto (data_acquisto, importo, dipendente) VALUES (%s, %s, %s) RETURNING numero;'
-# num, cliente
-INSERT_IMMEDIATO = 'INSERT INTO a_immediato (numero, cliente) VALUES (%s, %s);'
 # num, book, qty
 INSERT_COMPRENDE = 'INSERT INTO comprende (acquisto, libro, quantita) VALUES (%s, %s, %s);'
-# isbn, qty_to_subtract, isbn
-DECREASE_LIBRO = 'UPDATE libro SET disponibili = ((SELECT disponibili FROM libro WHERE isbn = %s) - %s) WHERE isbn = %s;'
+# num, cliente
+INSERT_PRENOTAZIONE = 'INSERT INTO prenotazione (numero, cliente, stato) VALUES (%s, %s, \'Transito\');'
 
 
-class AcquistoForm(QDialog):
+class PrenotazioneForm(QDialog):
     '''
     Widget per l'inserimento di un acquisto immediato.
     '''
@@ -33,7 +29,7 @@ class AcquistoForm(QDialog):
                 Connection to the database.
         '''
         super().__init__()
-        self.setWindowTitle('Aggiungi Acquisto')
+        self.setWindowTitle('Aggiungi Prenotazione')
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.conn = conn
@@ -49,10 +45,10 @@ class AcquistoForm(QDialog):
 
         # Widgets
         self.client_field = QLineEdit()
-        self.form_layout.addRow('Cliente (facoltativo): ', self.client_field)
+        self.form_layout.addRow('Numero Cliente: ', self.client_field)
 
         self.dip_field = QLineEdit()
-        self.form_layout.addRow('Dipendente: ', self.dip_field)
+        self.form_layout.addRow('Dipendente (CF): ', self.dip_field)
 
         self.date_picker = QDateEdit(QDate.currentDate())
         self.date_picker.setDisplayFormat("MM/dd/yyyy")
@@ -83,12 +79,15 @@ class AcquistoForm(QDialog):
         self.table.horizontalHeader().setSectionResizeMode(
             2, QHeaderView.ResizeToContents)
 
+        self.info_label = QLabel(
+            'Le prenotazioni non riducono i libri disponibili.')
         self.confirm_button = QPushButton('Conferma')
-        self.confirm_button.clicked.connect(self.post_acquisto)
+        self.confirm_button.clicked.connect(self.post_prenotazione)
 
         self.gen_layout.addLayout(self.form_layout)
         self.gen_layout.addLayout(self.ins_layout)
         self.gen_layout.addWidget(self.table)
+        self.gen_layout.addWidget(self.info_label)
         self.gen_layout.addWidget(self.confirm_button)
         self.setLayout(self.gen_layout)
 
@@ -119,33 +118,15 @@ class AcquistoForm(QDialog):
             return False
         return True
 
-    def verif_qty(self):
-        '''
-        Shows error messages based on the validity of inserted books, and
-        returns False, or returns True if all the books are ok to sell right now.
-        '''
-        if len(self.books.items()) == 0:
-            self._show_error('Non ci sono libri nell\'acquisto')
-            return False
-        for book, qty in self.books.items():
-            self.cursor.execute(FIND_QUANTITA, (book,))
-            result = self.cursor.fetchall()
-            if not result:
-                self._show_error('\'{}\' non è un libro valido.'.format(book))
-                return False
-            stored = result[0][0]
-            if stored < qty:
-                self._show_error(
-                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}'.format(qty, book, stored))
-                return False
-        return True
-
     def verif_client_dip(self):
         '''
         Returns false and displays and error message if cliente and dipendente are
         not valid tuples in the database, returns true if they are ok
         '''
         cliente = self.client_field.text()
+        if not cliente:
+            self._show_error('Il Cliente è necessario per una Prenotazione.')
+            return False
         if cliente:
             if not cliente.isdigit():
                 self._show_error('Il codice del Cliente deve essere numerico.')
@@ -167,14 +148,13 @@ class AcquistoForm(QDialog):
             return False
         return True
 
-    def post_acquisto(self):
+    def post_prenotazione(self):
         if not self.verif_money():
-            return
-        if not self.verif_qty():
             return
         if not self.verif_client_dip():
             return
-        cliente = self.client_field.text() if self.client_field.text().strip() else None
+        cliente = self.client_field.text().strip(
+        ) if self.client_field.text().strip() else None
         importo = self.importo_field.value()
         self.cursor.execute(INSERT_ACQUISTO, (
             self.date_picker.date().toString('MM/dd/yyyy'),
@@ -182,7 +162,7 @@ class AcquistoForm(QDialog):
             self.dip_field.text()
         ))
         new_id = self.cursor.fetchall()[0][0]
-        self.cursor.execute(INSERT_IMMEDIATO, (new_id, cliente))
+        self.cursor.execute(INSERT_PRENOTAZIONE, (new_id, cliente))
         for book in self.books.keys():
             self.cursor.execute(
                 INSERT_COMPRENDE, (new_id, book, self.books[book]))
@@ -191,8 +171,13 @@ class AcquistoForm(QDialog):
         self.accept()
 
     def _show_confirm(self):
-        dialog = _ScalaAcquistiDialog(self.books, self.conn)
-        dialog.setWindowTitle('Rimozione libri')
+        dialog = QMessageBox()
+        dialog.setWindowTitle('Conferma Prenotazione')
+        msg = 'Registrato prenotazione per i seguenti libri:\n{}'
+        dialog.setText(
+            msg.format('\n'.join(['{} x {}'.format(k, v)
+                                  for k, v in self.books.items()]))
+        )
         dialog.exec_()
 
     def _show_error(self, msg=''):
@@ -200,58 +185,3 @@ class AcquistoForm(QDialog):
         dialog.setWindowTitle('ERRORE')
         dialog.setText(msg)
         dialog.exec_()
-
-
-class _ScalaAcquistiDialog(QDialog):
-    def __init__(self, books: dict, conn):
-        super().__init__()
-        self.conn = conn
-        self.cursor = conn.cursor()
-        self.books = books
-
-        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
-        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
-
-        self.header_text = QLabel(
-            'Vuoi sottrarre al database i libri dell\'acquisto?')
-        self.body_text = QLabel(self._make_body())
-
-        self.yes_btn = QPushButton('Sì')
-        self.yes_btn.clicked.connect(self._decrease_books)
-
-        self.no_btn = QPushButton('No')
-        self.no_btn.clicked.connect(self.reject())
-
-        self.bot_buttons = QHBoxLayout()
-        self.bot_buttons.addWidget(self.yes_btn)
-        self.bot_buttons.addWidget(self.no_btn)
-
-        self.gen_layout = QVBoxLayout()
-        self.gen_layout.addWidget(self.header_text)
-        self.gen_layout.addWidget(self.body_text)
-        self.gen_layout.addLayout(self.bot_buttons)
-
-        self.setLayout(self.gen_layout)
-
-    def _make_body(self):
-        return '\n'.join(['{} x {}'.format(k, v) for k, v in self.books.items()])
-
-    def _decrease_books(self):
-        for book, qty in self.books.items():
-            self.cursor.execute(DECREASE_LIBRO, (book, qty, book))
-        self.conn.commit()
-        self.accept()
-
-
-if __name__ == '__main__':
-    application = QtWidgets.QApplication([])
-
-    pwd = input('Password: ')
-    conn = psycopg2.connect(database='postgres',
-                            user='postgres', password=pwd, port=5433)
-
-    widget = AcquistoForm(conn)
-    widget.resize(960, 720)
-    widget.show()
-
-    sys.exit(application.exec_())
