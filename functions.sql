@@ -89,11 +89,7 @@ RETURNS TABLE(
 $$ LANGUAGE SQL;
 
 /*
-QUERY 7 ----------------------------------------
-*/
-
-/*
-	Query 8
+	Query 7
 */
 CREATE FUNCTION generi_autore (author integer)
 RETURNS TABLE("Genere" character varying) AS $$
@@ -103,7 +99,7 @@ RETURNS TABLE("Genere" character varying) AS $$
 $$ LANGUAGE SQL;
 
 /*
-	Query 9
+	Query 8
 */
 CREATE FUNCTION generi_collana (coll character varying)
 RETURNS TABLE("Genere" character varying) AS $$
