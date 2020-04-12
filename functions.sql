@@ -17,7 +17,7 @@ $$ LANGUAGE SQL;
 /*
 	Query 2
 */
-CREATE FUNCTION fornitore_miglior_prezzo (book tipo_codice_isbn)
+CREATE FUNCTION fornitore_min_prezzo (book tipo_codice_isbn)
 RETURNS TABLE("Fornitore" tipo_partita_iva, "Prezzo" numeric) AS $$
 	SELECT fornitore AS "Fornitore", prezzo AS "Prezzo"
 	FROM catalogo
