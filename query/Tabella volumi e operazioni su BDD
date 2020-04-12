@@ -1,0 +1,40 @@
+OPERAZIONI SULLE BASI DI DATI
+1)Il dipendente che ha venduto più libri/interrogazione/ 1 volta a settimana
+2)Il fornitore che fornisce il libro al minor prezzo/interrogazione/ 30 volte al giorno
+3)Genere più venduto in un determinato arco temporale/interrogazione/ 1 volta al mese
+4)Nomi delle case editrici che han venduto libri in un giorno/interrogazione/ 1 volta al giorno
+5)Calcolo del bilancio/interrrogazione/1 volta al mese
+6)Lista di tutti i libri che appartengono ad un determinato genere/interrogazione/1 volta al mese
+7)Lista di tutti i libri prenotati che non sono stati ancora accantonati/interrogazione/1 volta al giorno
+8)Lista dei generi scritti da un'autore/interrogazione/10 volte al giorno
+9)Lista dei generi racchiusi in una determinata collana/interrogazione/10 volte al giorno
+Aggiornamento dipendenti/modifica/1 volta al mese
+Aggiornamento clienti/modifica/1 volta al giorno
+Aggiornamento distributori/modifica/1 volta al mese
+Aggiornamento quantità libri disponibili/modifica/1 volta al giorno
+Aggiornamento generi,collane,autori,editori/modifica/1 volta al giorno
+Inserimento nuovo ordine/modifica/20 volte al giorno
+Inserimento nuovo libro/modifica/10 volte al giorno
+
+
+
+TABELLLA DEI VOLUMI
+
+CONCETTO	TIPO	VOLUME
+Dipendente	Entità	10
+Libro		Entità	10000
+Acquisto	Entità	5000
+Cliente		Entità	500
+Prenotazione	Entità	300
+Autore		Entità	5000
+Editore		Entità	50
+Collana		Entità	500
+Genere		Entità	50
+Distributore	Entità	10
+Ordine		Entità	800
+Include		Associazione	15000
+Scrive		Associazione	20000
+Appartiene	Associazione	20000
+Catalogo	Associazione	5000
+Comp.ordine	Associzione	1500
+

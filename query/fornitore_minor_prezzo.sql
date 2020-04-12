@@ -4,10 +4,11 @@ Per un libro, la partita iva del fornitore che lo vende al prezzo più basso e i
 */
 SELECT fornitore AS "Fornitore", prezzo AS "Prezzo"
 FROM catalogo
-WHERE prezzo IN (
+WHERE libro = '9566288230239'
+AND prezzo IN (
     SELECT MIN(prezzo)
     FROM catalogo
-    WHERE libro = 'X'
+    WHERE libro = '9566288230239'
 );
 
 /* OPPURE */
