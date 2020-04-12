@@ -9,7 +9,7 @@ from PySide2.QtCore import QDate
 FIND_DIPENDENTE = 'SELECT cf FROM dipendente WHERE cf = %s;'
 # isbn
 FIND_CATALOGO = 'SELECT libro FROM catalogo WHERE fornitore = %s;'
-# date, money, dipendente
+# See column names
 INSERT_ORDINE = 'INSERT INTO ordine (dipendente, data_ordine, fornitore, libro, importo, quantita) VALUES (%s, %s, %s, %s, %s, %s);'
 
 
