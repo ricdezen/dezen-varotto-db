@@ -19,7 +19,7 @@ INSERTIONS = {
 # QUERIES = {Label : (function-name, {params-dict})}
 # params-dict = {param-name : widget}
 QUERIES = {
-    'Bilancio': ('bilancio', tuple()),
+    'Bilancio': ('bilancio', ('Anno: ', QSpinBox)),
     'Editori con vendite per giorno': ('case_editrici_vendite', ('Data: ', QDateEdit)),
     'Dipendente più attivo' : ('dipendente_max_vendite', tuple()),
     'Fornitore più economico libro' : ('fornitore_min_prezzo', ('Libro: ', QLineEdit)),
