@@ -64,11 +64,11 @@ $$ LANGUAGE SQL;
 /*
 	Query 5
 */
-CREATE FUNCTION bilancio () RETURNS numeric(11,2) AS $$
+CREATE FUNCTION bilancio (anno numeric) RETURNS numeric(11,2) AS $$
 	SELECT
-		(SELECT SUM(importo) FROM acquisto) -
-		(SELECT SUM(importo) FROM ordine) -
-		(SELECT SUM(stipendio) FROM dipendente)
+	(SELECT SUM(importo) FROM acquisto WHERE date_part('year', data_acquisto) = anno) -
+	(SELECT SUM(importo) FROM ordine WHERE date_part('year', data_ordine) = anno) -
+	(SELECT SUM(stipendio) FROM dipendente)
 	AS "Bilancio";
 $$ LANGUAGE SQL;
 
