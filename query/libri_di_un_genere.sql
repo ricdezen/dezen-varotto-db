@@ -6,4 +6,4 @@ SELECT DISTINCT L.isbn AS "ISBN", L.titolo AS "Titolo", L.nome_collana AS "Colla
 FROM appartiene AS A
 JOIN libro AS L
 ON A.libro = L.isbn
-WHERE A.genere = 'X';
+WHERE A.genere = XXXX;
