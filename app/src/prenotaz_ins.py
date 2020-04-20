@@ -128,12 +128,6 @@ class PrenotazioneForm(QDialog):
                 return False
         return True
 
-    def verif_money(self):
-        if not self.importo_field.value():
-            self._show_error('Importo pari a 0')
-            return False
-        return True
-
     def verif_client_dip(self):
         '''
         Returns false and displays and error message if cliente and dipendente are
@@ -165,8 +159,6 @@ class PrenotazioneForm(QDialog):
         return True
 
     def post_prenotazione(self):
-        if not self.verif_money():
-            return
         if not self.verif_libri():
             return
         if not self.verif_client_dip():

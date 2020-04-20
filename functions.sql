@@ -18,8 +18,8 @@ $$ LANGUAGE SQL;
 	Query 2
 */
 CREATE FUNCTION fornitore_min_prezzo (book tipo_codice_isbn)
-RETURNS TABLE("Fornitore" tipo_partita_iva, "Prezzo" numeric) AS $$
-	SELECT fornitore AS "Fornitore", prezzo AS "Prezzo"
+RETURNS TABLE("Distributore" tipo_partita_iva, "Prezzo" numeric) AS $$
+	SELECT distributore AS "Distributore", prezzo AS "Prezzo"
 	FROM catalogo
 	WHERE libro = book
 	AND prezzo IN (

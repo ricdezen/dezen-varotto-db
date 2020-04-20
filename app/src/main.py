@@ -113,9 +113,8 @@ class DbMainWindow(QMainWindow):
 
     def _make_show_dialog(self, dialogclass):
         def show_dialog():
-            dialog = dialogclass(self.connection)
-            dialog.setWindowTitle('Rimozione libri')
-            dialog.exec_()
+            self.last_dialog = dialogclass(self.connection)
+            self.last_dialog.show()
         return show_dialog
 
     def _show_error(self, msg=''):
