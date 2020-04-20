@@ -1,7 +1,3 @@
-/*
-QUERY 3
-Il nome, la descrizione e il numero di libri venduti del genere di cui è stato venduto il maggior numero di libri.
-*/
 CREATE VIEW vendite_per_genere AS (
     SELECT AP.genere AS genere, SUM(CO.quantita) AS quantita 
     FROM (

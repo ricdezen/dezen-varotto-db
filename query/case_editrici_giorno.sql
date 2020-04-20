@@ -1,7 +1,3 @@
-/*
-QUERY 4
-I nomi delle case editrici di cui sono stati venduti libri nel giorno X.
-*/
 SELECT DISTINCT L.nome_editore AS "Casa Editrice"
 FROM libro AS L
 JOIN comprende AS C
