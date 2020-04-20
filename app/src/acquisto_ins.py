@@ -114,12 +114,6 @@ class AcquistoForm(QDialog):
             self.table.setItem(row, 1, QTableWidgetItem(str(self.books[book])))
             self.table.setCellWidget(row, 2, button)
 
-    def verif_money(self):
-        if not self.importo_field.value():
-            self._show_error('Importo pari a 0')
-            return 1
-        return 0
-
     def verif_qty(self):
         '''
         Shows error messages based on the validity of inserted books, and
@@ -168,8 +162,6 @@ class AcquistoForm(QDialog):
         return 0
 
     def post_acquisto(self):
-        if self.verif_money():
-            return
         if self.verif_client_dip():
             return
         should_show = self.verif_qty()
