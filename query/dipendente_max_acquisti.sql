@@ -1,7 +1,3 @@
-/*
-QUERY 1
-Trovare il codice fiscale, nome e cognome del Dipendente che ha registrato il maggior numero di Acquisti dei clienti.
-*/
 CREATE VIEW acquisti_per_dipendente AS (
     SELECT dipendente, COUNT(*) AS acquisti
     FROM acquisto
