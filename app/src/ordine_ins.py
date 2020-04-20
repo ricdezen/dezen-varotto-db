@@ -8,9 +8,9 @@ from PySide2.QtCore import QDate
 # cf
 FIND_DIPENDENTE = 'SELECT cf FROM dipendente WHERE cf = %s;'
 # isbn
-FIND_CATALOGO = 'SELECT libro FROM catalogo WHERE fornitore = %s;'
+FIND_CATALOGO = 'SELECT libro FROM catalogo WHERE distributore = %s;'
 # See column names
-INSERT_ORDINE = 'INSERT INTO ordine (dipendente, data_ordine, fornitore, libro, importo, quantita) VALUES (%s, %s, %s, %s, %s, %s);'
+INSERT_ORDINE = 'INSERT INTO ordine (dipendente, data_ordine, distributore, libro, importo, quantita) VALUES (%s, %s, %s, %s, %s, %s);'
 
 
 class OrdineForm(QDialog):
