@@ -47,7 +47,7 @@ class OrdineForm(QDialog):
         self.form_layout.addRow('Data (mm/gg/aaaa): ', self.date_picker)
 
         self.forn_field = QLineEdit()
-        self.form_layout.addRow('Fornitore (P.IVA): ', self.forn_field)
+        self.form_layout.addRow('Distributore (P.IVA): ', self.forn_field)
 
         self.libro_field = QLineEdit()
         self.form_layout.addRow('Libro (ISBN): ', self.libro_field)
