@@ -8,6 +8,6 @@ CREATE TABLE acquisto
     CONSTRAINT acquisto_dipendente_fkey FOREIGN KEY (dipendente)
         REFERENCES dipendente (cf) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION,
+        ON DELETE RESTRICT,
     CONSTRAINT acquisto_importo_positivo CHECK (importo > 0)
 );

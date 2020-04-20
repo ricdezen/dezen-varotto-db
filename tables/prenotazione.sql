@@ -8,10 +8,10 @@ CREATE TABLE prenotazione
     CONSTRAINT prenotazione_fkey_acquisto FOREIGN KEY (numero)
         REFERENCES acquisto (numero) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION,
+        ON DELETE RESTRICT,
     CONSTRAINT prenotazione_fkey_cliente FOREIGN KEY (cliente)
         REFERENCES cliente (id) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION,
+        ON DELETE RESTRICT,
     CONSTRAINT prenotazione_data_se_chiusa CHECK (stato != 'Ritirato' OR data_ritiro IS NOT NULL)
 );

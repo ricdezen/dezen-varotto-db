@@ -5,9 +5,9 @@ CREATE TABLE a_immediato (
     CONSTRAINT immediato_fkey_acquisto FOREIGN KEY (numero)
         REFERENCES acquisto (numero) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION,
-    CONSTRAINT prenotazione_fkey_cliente FOREIGN KEY (cliente)
+        ON DELETE RESTRICT,
+    CONSTRAINT immediato_fkey_cliente FOREIGN KEY (cliente)
         REFERENCES cliente (id) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE NO ACTION
+        ON DELETE RESTRICT
 );
