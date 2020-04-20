@@ -117,8 +117,8 @@ class AcquistoForm(QDialog):
     def verif_money(self):
         if not self.importo_field.value():
             self._show_error('Importo pari a 0')
-            return False
-        return True
+            return 1
+        return 0
 
     def verif_qty(self):
         '''
@@ -127,19 +127,18 @@ class AcquistoForm(QDialog):
         '''
         if len(self.books.items()) == 0:
             self._show_error('Non ci sono libri nell\'acquisto')
-            return False
+            return 1
         for book, qty in self.books.items():
             self.cursor.execute(FIND_QUANTITA, (book,))
             result = self.cursor.fetchall()
             if not result:
                 self._show_error('\'{}\' non è un libro valido.'.format(book))
-                return False
+                return 2
             stored = result[0][0]
             if stored < qty:
-                self._show_error(
-                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}'.format(qty, book, stored))
-                return False
-        return True
+                return self.__show_are_you_sure(
+                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}.\nNon sarà possibile sottrarre i libri acquistati.\nVuoi proseguire ugualmente?'.format(qty, book, stored))
+        return 0
 
     def verif_client_dip(self):
         '''
@@ -150,30 +149,31 @@ class AcquistoForm(QDialog):
         if cliente:
             if not cliente.isdigit():
                 self._show_error('Il codice del Cliente deve essere numerico.')
-                return False
+                return 1
             self.cursor.execute(FIND_CLIENTE, (cliente,))
             result = self.cursor.fetchall()
             if not result or not result[0][0]:
                 self._show_error('Cliente {} non esiste.'.format(cliente))
-                return False
+                return 2
 
         dipendente = self.dip_field.text()
         if not dipendente:
             self._show_error('Il Dipendente non può essere vuoto.')
-            return False
+            return 3
         self.cursor.execute(FIND_DIPENDENTE, (dipendente,))
         result = self.cursor.fetchall()
         if not result or not result[0][0]:
             self._show_error('Dipendente {} non esiste.'.format(dipendente))
-            return False
-        return True
+            return 4
+        return 0
 
     def post_acquisto(self):
-        if not self.verif_money():
+        if self.verif_money():
             return
-        if not self.verif_qty():
+        if self.verif_client_dip():
             return
-        if not self.verif_client_dip():
+        should_show = self.verif_qty()
+        if should_show > 0:
             return
         cliente = self.client_field.text().strip(
         ) if self.client_field.text().strip() else None
@@ -189,8 +189,14 @@ class AcquistoForm(QDialog):
             self.cursor.execute(
                 INSERT_COMPRENDE, (new_id, book, self.books[book]))
         self.conn.commit()
-        self._show_confirm()
+        if should_show == 0 : self._show_confirm()
         self.accept()
+
+    def __show_are_you_sure(self, msg=''):
+        dialog = _AreYouSureDialog(msg)
+        dialog.setWindowTitle('ATTENZIONE')
+        result = dialog.exec_()
+        return -1 if result == QDialog.Accepted else 3
 
     def _show_confirm(self):
         dialog = _ScalaAcquistiDialog(self.books, self.conn)
@@ -202,6 +208,32 @@ class AcquistoForm(QDialog):
         dialog.setWindowTitle('ERRORE')
         dialog.setText(msg)
         dialog.exec_()
+
+
+class _AreYouSureDialog(QDialog):
+    def __init__(self, msg):
+        super().__init__()
+
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+
+        self.message_label = QLabel(msg)
+
+        self.yes_btn = QPushButton('Sì')
+        self.yes_btn.clicked.connect(self.accept)
+
+        self.no_btn = QPushButton('No')
+        self.no_btn.clicked.connect(self.reject)
+
+        self.bot_buttons = QHBoxLayout()
+        self.bot_buttons.addWidget(self.yes_btn)
+        self.bot_buttons.addWidget(self.no_btn)
+
+        self.gen_layout = QVBoxLayout()
+        self.gen_layout.addWidget(self.message_label)
+        self.gen_layout.addLayout(self.bot_buttons)
+
+        self.setLayout(self.gen_layout)
 
 
 class _ScalaAcquistiDialog(QDialog):
@@ -222,7 +254,7 @@ class _ScalaAcquistiDialog(QDialog):
         self.yes_btn.clicked.connect(self._decrease_books)
 
         self.no_btn = QPushButton('No')
-        self.no_btn.clicked.connect(self.reject())
+        self.no_btn.clicked.connect(self.reject)
 
         self.bot_buttons = QHBoxLayout()
         self.bot_buttons.addWidget(self.yes_btn)
