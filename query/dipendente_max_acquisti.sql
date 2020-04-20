@@ -8,7 +8,7 @@ CREATE VIEW acquisti_per_dipendente AS (
     GROUP BY dipendente
 );
 
-SELECT A.dipendente AS "Codice Fiscale", 
+SELECT A.dipendente AS "Codice Fiscale", D.nome AS "Nome", D.cognome AS "Cognome"
 FROM acquisti_per_dipendente AS A
 JOIN dipendente AS D
 ON A.dipendente = D.cf
