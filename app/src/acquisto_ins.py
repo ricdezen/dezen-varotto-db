@@ -137,7 +137,7 @@ class AcquistoForm(QDialog):
             stored = result[0][0]
             if stored < qty:
                 return self.__show_are_you_sure(
-                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}. Non sarà possibile sottrarre i libri, vuoi proseguire ugualmente?'.format(qty, book, stored))
+                    'L\'acquisto richiede {} libri {}, ma ne sono presenti solo {}.\nNon sarà possibile sottrarre i libri acquistati.\nVuoi proseguire ugualmente?'.format(qty, book, stored))
         return 0
 
     def verif_client_dip(self):
