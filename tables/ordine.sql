@@ -21,5 +21,5 @@ CREATE TABLE ordine
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
     CONSTRAINT ordine_quantita_positiva CHECK (quantita > 0),
-    CONSTRAINT ordine_importo_non_negativo CHECK (importo >= 0)
+    CONSTRAINT ordine_importo_positivo CHECK (importo >= 0)
 );
