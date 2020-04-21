@@ -13,5 +13,8 @@ CREATE TABLE prenotazione
         REFERENCES cliente (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
-    CONSTRAINT prenotazione_data_se_chiusa CHECK (stato != 'Ritirato' OR data_ritiro IS NOT NULL)
+    CONSTRAINT prenotazione_data_se_chiusa CHECK (
+        (stato = 'Ritirato' AND data_ritiro IS NOT NULL) OR
+        (stato <> 'Ritirato' AND data_ritiro IS NULL)
+    )
 );
