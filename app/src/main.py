@@ -56,14 +56,14 @@ class DbMainWindow(QMainWindow):
 
         self.table_menu = self.menu.addMenu('Tabelle')
         for table in self.table_list:
-            action = QAction(table, self)
+            action = QAction(' '.join([t.capitalize() for t in table.replace('_', ' ').split()]), self)
             callback = self._make_show_table(table)
             action.triggered.connect(callback)
             self.table_menu.addAction(action)
 
         self.view_menu = self.menu.addMenu('Viste')
         for view in self.view_list:
-            action = QAction(view, self)
+            action = QAction(' '.join([v.capitalize() for v in view.replace('_', ' ').split()]), self)
             callback = self._make_show_table(view)
             action.triggered.connect(callback)
             self.view_menu.addAction(action)
@@ -127,6 +127,7 @@ class DbMainWindow(QMainWindow):
 def display_app(application, connection):
 
     widget = DbMainWindow(connection)
+    widget.setWindowTitle('Gestore Libreria')
     widget.resize(960, 720)
     widget.show()
 
