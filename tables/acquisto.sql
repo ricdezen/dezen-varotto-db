@@ -9,5 +9,5 @@ CREATE TABLE acquisto
         REFERENCES dipendente (cf) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
-    CONSTRAINT acquisto_importo_positivo CHECK (importo > 0)
+    CONSTRAINT acquisto_importo_positivo CHECK (importo >= 0)
 );
